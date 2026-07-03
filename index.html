@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClaimSense AI — Explainable Claims Risk Scoring for Health Insurers & TPAs</title>
+  <meta name="description" content="ClaimSense AI is an explainable claims-risk scoring platform built for Indian Third-Party Administrators (TPAs) and health insurers to detect fraud and prevent claims leakage.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside>
+    <div class="logo-container">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+      </div>
+      <span class="logo-text">ClaimSense AI</span>
+    </div>
+
+    <div class="menu-label">Main Menu</div>
+    <nav>
+      <a href="#" class="nav-item active" data-tab="dashboard" id="nav-dashboard">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="9" rx="1"/>
+          <rect x="14" y="3" width="7" height="5" rx="1"/>
+          <rect x="14" y="12" width="7" height="9" rx="1"/>
+          <rect x="3" y="16" width="7" height="5" rx="1"/>
+        </svg>
+        <span>Overview</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="claims" id="nav-claims">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+        </svg>
+        <span>Claims Queue</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="simulator" id="nav-simulator">
+        <svg viewBox="0 0 24 24">
+          <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        <span>Simulator</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="analytics" id="nav-analytics">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10a2 2 0 01-2 2h-2a2 2 0 01-2-2zm9 0v-8a2 2 0 00-2-2h-2a2 2 0 00-2 2v8a2 2 0 002 2h2a2 2 0 002-2z"/>
+        </svg>
+        <span>Analytics Insights</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div>Active Tenant:</div>
+      <strong>MediCare TPA India</strong>
+    </div>
+  </aside>
+
+  <!-- Main Content Layout -->
+  <main>
+    <header>
+      <div class="header-title">
+        <h1 id="main-header-title">Claims Risk Manager</h1>
+        <p id="main-header-subtitle">Real-time explainable billing auditing & fraud detection</p>
+      </div>
+      <div class="header-actions">
+        <div class="status-indicator">
+          <div class="pulse-dot"></div>
+          <span>Feeds Online</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Metrics Stats Grid (Shared across Overview) -->
+    <section class="metrics-grid">
+      <div class="glass-card metric-card" id="metric-total-claims">
+        <div class="metric-icon-box">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div class="metric-details">
+          <span class="metric-label">Total Claims Audited</span>
+          <span class="metric-value" id="total-claims-val">0</span>
+        </div>
+      </div>
+      <div class="glass-card metric-card" id="metric-flagged-claims">
+        <div class="metric-icon-box">
+          <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </div>
+        <div class="metric-details">
+          <span class="metric-label">High Risk Flagged</span>
+          <span class="metric-value" id="flagged-claims-val">0</span>
+        </div>
+      </div>
+      <div class="glass-card metric-card" id="metric-total-leakage">
+        <div class="metric-icon-box">
+          <svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div class="metric-details">
+          <span class="metric-label">Billing Leakage Intercepted</span>
+          <span class="metric-value" id="total-leakage-val">₹0</span>
+        </div>
+      </div>
+      <div class="glass-card metric-card" id="metric-avg-risk">
+        <div class="metric-icon-box">
+          <svg viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+        </div>
+        <div class="metric-details">
+          <span class="metric-label">Average Risk Index</span>
+          <span class="metric-value" id="avg-risk-val">0%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 1: OVERVIEW PANEL -->
+    <section id="dashboard-panel" class="view-panel active">
+      <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.05)); border-color: rgba(99, 102, 241, 0.3);">
+        <h2 style="font-family: var(--font-display); font-weight:700; margin-bottom: 0.75rem;">Welcome to ClaimSense AI Dashboard</h2>
+        <p style="color: var(--text-muted); line-height: 1.6; max-width: 800px;">
+          This platform executes explainable machine learning models to detect fraud, inflated billing, and tariff upcoding for Indian health insurance claims. By converting SHAP (SHapley Additive exPlanations) values into conversational natural language reasons, we help claim review teams make faster, defensible decisions.
+        </p>
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+          <button class="btn-primary" onclick="document.getElementById('nav-claims').click()">
+            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            Review Claims Queue
+          </button>
+          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-primary); box-shadow: none;" onclick="document.getElementById('nav-simulator').click()">
+            <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            Open Simulator
+          </button>
+        </div>
+      </div>
+
+      <div class="layout-split" style="grid-template-columns: 1fr 1fr;">
+        <div class="glass-card">
+          <h3 style="font-family: var(--font-display); font-weight: 600; margin-bottom: 1.25rem;">Core Features Checklist</h3>
+          <ul style="color: var(--text-muted); line-height: 1.8; padding-left: 1.25rem;">
+            <li><strong>Explainable Risk Scoring:</strong> Dynamic scoring based on procedure, hospital history, and room rent caps.</li>
+            <li><strong>SHAP Attribution Visualization:</strong> Visualizes factors pushing the score up or down.</li>
+            <li><strong>Interactive Review Actions:</strong> Approve, reject, or auto-adjust billing leakage directly from the details panel.</li>
+            <li><strong>B2B API Simulator:</strong> Live-simulate claim queues to evaluate system scale and dashboard speed.</li>
+          </ul>
+        </div>
+        <div class="glass-card">
+          <h3 style="font-family: var(--font-display); font-weight: 600; margin-bottom: 1.25rem;">MediCare TPA Integration Stats</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+              <span style="color: var(--text-muted);">Current Active Network Providers:</span>
+              <span style="font-weight:600;">342 Hospitals</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+              <span style="color: var(--text-muted);">Configured Room Rent Cap:</span>
+              <span style="font-weight:600;">1% of Sum Insured / Day</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+              <span style="color: var(--text-muted);">Average Audit Decision Speed:</span>
+              <span style="font-weight:600; color: var(--accent-cyan);">~1.8 Minutes / Claim</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CLAIMS QUEUE PANEL -->
+    <section id="claims-panel" class="view-panel">
+      <div class="layout-split">
+        <!-- Claims List Area (Left Column) -->
+        <div>
+          <div class="filter-bar">
+            <div class="search-wrapper">
+              <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              <input type="text" id="search-input" class="search-input" placeholder="Search by Claim ID, Patient, Hospital...">
+            </div>
+            <div class="filter-actions">
+              <select id="risk-filter" class="select-input">
+                <option value="all">All Risk Levels</option>
+                <option value="high">High Risk (>= 70)</option>
+                <option value="medium">Medium Risk (40 - 69)</option>
+                <option value="low">Low Risk (< 40)</option>
+              </select>
+              <select id="hospital-filter" class="select-input">
+                <option value="all">All Providers</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 110px;">Claim ID</th>
+                  <th style="width: 100px;">Date</th>
+                  <th>Patient</th>
+                  <th>Hospital</th>
+                  <th>Procedure</th>
+                  <th style="width: 120px;">Amount</th>
+                  <th style="width: 130px;">Audit Risk</th>
+                </tr>
+              </thead>
+              <tbody id="claims-table-body">
+                <!-- Javascript will inject data -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Explainability Side Drawer (Right Column) -->
+        <div class="glass-card detail-panel" id="selected-claim-detail">
+          <!-- Javascript will inject selected claim details -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: SIMULATOR PANEL -->
+    <section id="simulator-panel" class="view-panel">
+      <div class="sim-controls-header">
+        <div>
+          <h2 style="font-family:var(--font-display); font-weight:700;">Claims Stream Simulator</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Simulate real-time claim packet transmission via TPA core system feeds.</p>
+        </div>
+        <button id="btn-toggle-sim" class="btn-primary">
+          <svg viewBox="0 0 24 24"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Start Claims Stream
+        </button>
+      </div>
+
+      <div class="simulator-layout">
+        <!-- Form (Left) -->
+        <div class="glass-card">
+          <h3 style="font-family:var(--font-display); font-weight:600; margin-bottom: 1.25rem;">Inject Custom Claim</h3>
+          <form id="sim-inject-form">
+            <div class="form-group">
+              <label for="sim-form-name">Patient Name</label>
+              <input type="text" id="sim-form-name" class="form-control" placeholder="e.g. Ramesh Kumar" required>
+            </div>
+            <div class="form-group">
+              <label for="sim-form-hospital">Hospital Provider</label>
+              <select id="sim-form-hospital" class="form-control">
+                <option value="Apollo Specialty Hospitals">Apollo Specialty Hospitals (Chennai)</option>
+                <option value="Fortis Memorial Research Institute">Fortis Memorial (Gurugram)</option>
+                <option value="Manipal Hospital">Manipal Hospital (Bengaluru)</option>
+                <option value="Max Super Speciality Hospital">Max Super Speciality (New Delhi)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="sim-form-procedure">Medical Procedure</label>
+              <select id="sim-form-procedure" class="form-control">
+                <option value="Coronary Angioplasty (PTCA)">Coronary Angioplasty (PTCA)</option>
+                <option value="Laparoscopic Appendectomy">Laparoscopic Appendectomy</option>
+                <option value="Cataract Surgery with Foldable IOL">Cataract Surgery</option>
+                <option value="Dengue Fever Inpatient Care">Dengue Inpatient Care</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="sim-form-amount">Claimed Amount (INR)</label>
+              <input type="number" id="sim-form-amount" class="form-control" placeholder="e.g. 150000" required>
+            </div>
+            <button type="submit" id="btn-inject-claim" class="btn-primary btn-block">
+              <svg viewBox="0 0 24 24"><path d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Submit to Auditing API
+            </button>
+          </form>
+        </div>
+
+        <!-- Logs & Results (Right) -->
+        <div class="simulation-stream">
+          <div class="glass-card">
+            <h3 style="font-family:var(--font-display); font-weight:600; margin-bottom: 0.75rem;">System Console</h3>
+            <div class="console-box" id="sim-console">
+              <!-- Logs print here -->
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <h3 style="font-family:var(--font-display); font-weight:600; margin-bottom: 0.75rem;">Processed Stream Feed</h3>
+            <div class="scanned-claims-list" id="scanned-claims-list">
+              <!-- Scanned claims bubbles appear here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: ANALYTICS PANEL -->
+    <section id="analytics-panel" class="view-panel">
+      <div class="analytics-grid">
+        <!-- Left: Chart.js Doughnut -->
+        <div class="glass-card chart-card">
+          <h3 style="font-family:var(--font-display); font-weight:600; margin-bottom: 1.25rem;">Leakage Classification Distribution</h3>
+          <div style="height: 230px; position:relative;">
+            <canvas id="leakage-types-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Right: HTML Progress bar stats -->
+        <div class="glass-card">
+          <h3 style="font-family:var(--font-display); font-weight:600; margin-bottom: 1.25rem;">Leakage Leak Type Ratios</h3>
+          <div class="ratio-list">
+            <div class="ratio-item">
+              <div class="ratio-label-row">
+                <span class="ratio-label">Inflated Billing</span>
+                <span class="ratio-val" id="ratio-val-inflated">0 cases</span>
+              </div>
+              <div class="ratio-track">
+                <div class="ratio-fill inflated" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div class="ratio-item">
+              <div class="ratio-label-row">
+                <span class="ratio-label">Upcoding</span>
+                <span class="ratio-val" id="ratio-val-upcoding">0 cases</span>
+              </div>
+              <div class="ratio-track">
+                <div class="ratio-fill upcoding" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div class="ratio-item">
+              <div class="ratio-label-row">
+                <span class="ratio-label">Unbundled Services</span>
+                <span class="ratio-val" id="ratio-val-unbundled">0 cases</span>
+              </div>
+              <div class="ratio-track">
+                <div class="ratio-fill unbundled" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div class="ratio-item">
+              <div class="ratio-label-row">
+                <span class="ratio-label">Unjustified Stay</span>
+                <span class="ratio-val" id="ratio-val-unjustified">0 cases</span>
+              </div>
+              <div class="ratio-track">
+                <div class="ratio-fill unjustified" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div class="ratio-item">
+              <div class="ratio-label-row">
+                <span class="ratio-label">Duplicate Claim</span>
+                <span class="ratio-val" id="ratio-val-duplicate">0 cases</span>
+              </div>
+              <div class="ratio-track">
+                <div class="ratio-fill duplicate" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trend savings chart -->
+      <div class="glass-card chart-card" style="height: 350px;">
+        <h3 style="font-family:var(--font-display); font-weight:600; margin-bottom: 1.25rem;">Cumulative Prevented Leakage (Savings over Audit timeline)</h3>
+        <div style="height: 260px; position:relative;">
+          <canvas id="risk-trend-chart"></canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Script Files -->
+  <script src="data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
