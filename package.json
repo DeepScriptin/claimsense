@@ -1,0 +1,13 @@
+{
+  "name": "claimsense-ai",
+  "version": "1.0.0",
+  "description": "Explainable Claims Risk Scoring for Health Insurers & TPAs",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve",
+    "dev": "serve"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
